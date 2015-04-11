@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"  
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+           http://cxf.apache.org/jaxws    
+           http://cxf.apache.org/schemas/jaxws.xsd
+           http://cxf.apache.org/transports/http/configuration     
+           http://cxf.apache.org/schemas/configuration/http-conf.xsd">    
+        <!-- Import apache CXF bean definition 固定-->  
+    <import resource="classpath:META-INF/cxf/cxf.xml" />  
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />  
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />      
+    
+    <context:annotation-config/>
+	<context:component-scan base-package="org.ow2.aspirerdfid.tracking.demo"/>
+	<aop:aspectj-autoproxy/>
+	
+	<http-conf:conduit name=".*/search">       
+          <http-conf:client ConnectionTimeout="1000" ReceiveTimeout="5000"/>      
+    </http-conf:conduit>  
+    
+    <http-conf:conduit name=".*/forward">       
+          <http-conf:client ConnectionTimeout="5000" ReceiveTimeout="10000"/>      
+    </http-conf:conduit>  
+    
+    <jaxws:endpoint  id="forward"   address="/forward"
+	  implementor="com.ws.services.impl.IForwardServicesImpl" />
+    
+    
+		<bean id="dataSource"
+			class="org.apache.commons.dbcp.BasicDataSource"
+			destroy-method="close">
+				<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/management_center?useUnicode=true&amp;characterEncoding=utf8"/>
+				<property name="username" value="root"/>
+				<property name="password" value="root"/>
+		</bean>
+
+		<bean id="sessionFactory"
+			class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+		 	<property name="packagesToScan">
+				<list>
+					<value>org.ow2.aspirerdfid.tracking.demo.model</value>
+				</list>
+			</property>
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+					<prop key="hibernate.show_sql">true</prop>
+				</props>
+			</property>
+		</bean>	
+	
+		<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+</beans>		

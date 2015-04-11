@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+<constant name="struts.enable.DynamicMethodInvocation" value="true" /> 
+		<package name="json" extends="json-default">
+			<action name="factorys" class="org.ow2.aspirerdfid.tracking.demo.action.FactoryAction">
+				<result name="show" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>	
+				<result name="list" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>	
+			</action>
+		
+			<action name="items" class="org.ow2.aspirerdfid.tracking.demo.action.ItemAction">
+				<result name="list" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="schedule" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="show" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="search" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+			</action>
+			
+			<action name="orders" class="org.ow2.aspirerdfid.tracking.demo.action.OrderAction">
+				<result name="show" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="list" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="create" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="custom" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="search" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+			</action>
+			
+			<action name="tracks" class="org.ow2.aspirerdfid.tracking.demo.action.TrackingAction">
+				<result name="success" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+			</action>
+			
+			<action name="register" class="org.ow2.aspirerdfid.tracking.demo.action.RegisterAction">
+				<result name="message" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+			</action>
+			
+			<action name="logs" class="org.ow2.aspirerdfid.tracking.demo.action.LogAction">
+				<result name="list" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+				<result name="search" type="json">
+					<param name="callbackParameter">callback</param>
+				</result>
+			</action>
+			
+			<action name="testJson" class="org.ow2.aspirerdfid.tracking.demo.action.TestAction">
+				<result name="test" type="json"></result>
+			</action>
+		</package>
+		
+		
+		
+		<package name="test" extends="struts-default" namespace="/test">
+						
+			<action name="orders" class="org.ow2.aspirerdfid.tracking.demo.action.OrderAction">
+			</action>
+			<action name="testJson" class="org.ow2.aspirerdfid.tracking.demo.action.TestAction">		
+			</action>
+		</package>
+		
+		<package name="webServices" extends="struts-default" namespace="/services">   
+             <action name="*">       
+                <result>{1}</result>
+             </action>
+	</package>
+</struts>
+	
